@@ -1,7 +1,7 @@
 package config
 
 import (
-"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func RegisterConfigRouter(r *gin.RouterGroup, ctrl *ConfigController) {

@@ -1,26 +1,65 @@
-.DS_Store
-.vite-ssg-dist
-.vite-ssg-temp
-*.local
-dist
-dist-ssr
-node_modules
-.idea/
-# .vscode/
-*.log
+# Dependencies
+node_modules/
 
-# Binaries for programs and plugins
+# Claude Code config
+.claude/
+
+# Build output
+dist/
+dist-ssr/
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary, built with `go test -c`
 *.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Dependency directories (remove the comment below to include it)
+# Environment variables (sensitive)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+*.stackdump
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+.vite-ssg-dist/
+.vite-ssg-temp/
+*.local
+
+# Server binaries and tokens
+gin-blog-server/main.exe
+gin-blog-server/server.exe
+gin-blog-server/login.json
+gin-blog-server/token.txt
+
+# User uploaded files
+public/uploaded/
+
+# SSL certificates
+*.crt
+*.key
+
+# Frontend env files
+gin-blog-front/.env*
+gin-blog-admin/.env*
+
+# Vendor (uncomment if needed)
 # vendor/
