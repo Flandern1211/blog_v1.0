@@ -85,20 +85,20 @@ func generateDefaultConfigs(db *gorm.DB) {
 
 	configs := []entity.Config{
 		{Key: "website_avatar", Value: "https://foruda.gitee.com/avatar/1677041571085433939/5221991_szluyu99_1614389421.png", Desc: "网站头像"},
-		{Key: "website_name", Value: "阵雨的个人博客", Desc: "网站名称"},
-		{Key: "website_author", Value: "阵雨", Desc: "网站作者"},
+		{Key: "website_name", Value: "Flandern的个人博客", Desc: "网站名称"},
+		{Key: "website_author", Value: "Flandern", Desc: "网站作者"},
 		{Key: "website_intro", Value: "往事随风而去", Desc: "网站介绍"},
-		{Key: "website_notice", Value: "欢迎来到阵雨的个人博客，项目还在开发中...", Desc: "网站公告"},
+		{Key: "website_notice", Value: "欢迎来到Flandern的个人博客.", Desc: "网站公告"},
 		{Key: "website_createtime", Value: time.Now().Format(time.DateTime), Desc: "网站创建日期"},
-		{Key: "website_record", Value: "粤ICP备2021032312号", Desc: "网站备案号"},
-		{Key: "qq", Value: "123456789", Desc: "QQ"},
+		{Key: "website_record", Value: "", Desc: "网站备案号"},
+		{Key: "qq", Value: "3180066912", Desc: "QQ"},
 		{Key: "github", Value: "https://github.com/szluyu99", Desc: "github"},
 		{Key: "gitee", Value: "https://gitee.com/szluyu99", Desc: "gitee"},
-		{Key: "tourist_avatar", Value: "https://cdn.hahacode.cn/config/tourist_avatar.png", Desc: "默认游客头像"},
-		{Key: "user_avatar", Value: "https://cdn.hahacode.cn/config/user_avatar.png", Desc: "默认用户头像"},
-		{Key: "article_cover", Value: "https://cdn.hahacode.cn/config/default_article_cover.png", Desc: "默认文章封面"},
-		{Key: "is_comment_review", Value: "true", Desc: "评论默认审核"},
-		{Key: "is_message_review", Value: "true", Desc: "留言默认审核"},
+		{Key: "tourist_avatar", Value: "https://pic4.zhimg.com/50/v2-6afa72220d29f045c15217aa6b275808_hd.jpg?source=1940ef5c", Desc: "默认游客头像"},
+		{Key: "user_avatar", Value: "https://pic4.zhimg.com/50/v2-6afa72220d29f045c15217aa6b275808_hd.jpg?source=1940ef5c", Desc: "默认用户头像"},
+		{Key: "article_cover", Value: "https://github.com/Flandern1211/blog_v1.0/blob/main/images/%E5%89%8D%E5%8F%B0%E9%A6%96%E9%A1%B5.png?raw=true", Desc: "默认文章封面"},
+		{Key: "is_comment_review", Value: "false", Desc: "评论默认审核"},
+		{Key: "is_message_review", Value: "false", Desc: "留言默认审核"},
 	}
 
 	for _, config := range configs {
@@ -361,12 +361,12 @@ func generateDefaultMenus(db *gorm.DB) {
 		{Name: "用户列表", Path: "list", Component: "/user/list", Icon: "mdi:account", OrderNum: 1, ParentId: parents[4].ID},
 		{Name: "在线用户", Path: "online", Component: "/user/online", Icon: "ic:outline-online-prediction", OrderNum: 2, ParentId: parents[4].ID},
 		// 日志管理
-		{Name: "操作日志", Path: "operation", Component: "/log/operation", Icon: "mdi:book-open-page-variant-outline", OrderNum: 1, ParentId: parents[4].ID},
-		{Name: "登录日志", Path: "login", Component: "/log/login", Icon: "material-symbols:login", OrderNum: 2, ParentId: parents[4].ID},
+		{Name: "操作日志", Path: "operation", Component: "/log/operation", Icon: "mdi:book-open-page-variant-outline", OrderNum: 1, ParentId: parents[5].ID},
+		{Name: "登录日志", Path: "login", Component: "/log/login", Icon: "material-symbols:login", OrderNum: 2, ParentId: parents[5].ID},
 		// 系统管理
-		{Name: "网站管理", Path: "website", Component: "/setting/website", Icon: "el:website", OrderNum: 1, ParentId: parents[5].ID},
-		{Name: "页面管理", Path: "page", Component: "/setting/page", Icon: "iconoir:journal-page", OrderNum: 2, ParentId: parents[5].ID},
-		{Name: "关于我", Path: "about", Component: "/setting/about", Icon: "cib:about-me", OrderNum: 4, ParentId: parents[5].ID},
+		{Name: "网站管理", Path: "website", Component: "/setting/website", Icon: "el:website", OrderNum: 1, ParentId: parents[6].ID},
+		{Name: "页面管理", Path: "page", Component: "/setting/page", Icon: "iconoir:journal-page", OrderNum: 2, ParentId: parents[6].ID},
+		{Name: "关于我", Path: "about", Component: "/setting/about", Icon: "cib:about-me", OrderNum: 4, ParentId: parents[6].ID},
 	}
 
 	for i := range menus {

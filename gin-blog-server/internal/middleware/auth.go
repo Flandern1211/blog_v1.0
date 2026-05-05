@@ -47,7 +47,7 @@ func JWTAuth(authSvc service.AuthService) gin.HandlerFunc {
 			return
 		}
 
-		tokenKey := g.TOKEN_WHITELIST + utils.MD5(parts[1])
+		tokenKey := utils.MD5(parts[1])
 		if !authSvc.CheckTokenExists(c.Request.Context(), tokenKey) {
 			response.Error(c, pkgErrors.CodeInvalidToken, pkgErrors.GetMessage(pkgErrors.CodeInvalidToken))
 			c.Abort()

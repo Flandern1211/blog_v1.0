@@ -2,15 +2,13 @@ const Layout = () => import('@/layout/index.vue')
 
 export default {
   name: 'System',
-  path: '/system',
+  path: '/setting',
   component: Layout,
-  redirect: '/system/website',
+  redirect: '/setting/website',
   meta: {
     title: '系统管理',
     icon: 'ion:md-settings',
     order: 6,
-    // role: ['admin'],
-    // requireAuth: true,
   },
   children: [
     {
@@ -25,7 +23,7 @@ export default {
       },
     },
     {
-      name: '页面管理',
+      name: 'Page',
       path: 'page',
       component: () => import('./page/index.vue'),
       meta: {

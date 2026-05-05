@@ -32,7 +32,7 @@ onMounted(async () => {
           <!-- 图片 -->
           <div class="overflow-hidden">
             <RouterLink :to="`/article/${article.id}`">
-              <img :src="convertImgUrl(article.img)" class="h-[220px] w-full rounded-t-xl transition-600 hover:scale-110">
+              <img :src="convertImgUrl(article.img)" style="aspect-ratio: 22/9" class="w-full rounded-t-xl object-cover transition-600 hover:scale-110">
             </RouterLink>
           </div>
           <!-- 内容 -->

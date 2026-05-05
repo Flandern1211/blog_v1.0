@@ -22,11 +22,11 @@ type EmailData struct {
 
 // GetEmailData 获取邮件数据
 func GetEmailData(username, info string) *EmailData {
-	// TODO: 从配置中获取基础 URL
+	baseURL := g.GetConfig().Email.URL
 	return &EmailData{
 		UserName: username,
 		Subject:  "注册验证",
-		URL:      "http://localhost:8080/api/verify?info=" + info,
+		URL:      baseURL + "/api/verify?info=" + info,
 	}
 }
 

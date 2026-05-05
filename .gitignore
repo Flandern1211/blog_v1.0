@@ -15,11 +15,6 @@ dist-ssr/
 *.test
 *.out
 
-# Environment variables (sensitive)
-.env
-.env.*
-!.env.example
-
 # Logs
 *.log
 *.stackdump

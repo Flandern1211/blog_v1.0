@@ -1,4 +1,4 @@
-.PHONY: all build run test clean migrate help
+    .PHONY: all build run test clean migrate help
 
 # 变量定义
 APP_NAME=blog-api

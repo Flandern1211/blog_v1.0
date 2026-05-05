@@ -57,6 +57,7 @@ type Config struct {
 		Port     int    // 前往要发邮件的邮箱查看其 smtp 协议端口, 大多为 465
 		SmtpPass string // 邮箱密钥 不是密码是开启smtp后给你的密钥
 		SmtpUser string // 邮箱账号
+		URL      string // 站点基础 URL, 用于生成验证链接
 	}
 	Captcha struct {
 		SendEmail  bool // 是否通过邮箱发送验证码
