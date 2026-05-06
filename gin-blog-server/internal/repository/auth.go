@@ -29,9 +29,6 @@ type AuthRepository interface {
 	SetEmailCode(ctx context.Context, email, code string, ttl time.Duration) error
 	GetEmailCode(ctx context.Context, email string) (string, error)
 	DelEmailCode(ctx context.Context, email string) error
-	SetVerificationInfo(ctx context.Context, info string, ttl time.Duration) error
-	GetVerificationInfo(ctx context.Context, info string) (string, error)
-	DelVerificationInfo(ctx context.Context, info string) error
 	DelOfflineMark(ctx context.Context, userId int) error
 	SetOfflineMark(ctx context.Context, userId int, ttl time.Duration) error
 }
@@ -183,18 +180,6 @@ func (r *authRepository) GetEmailCode(ctx context.Context, email string) (string
 
 func (r *authRepository) DelEmailCode(ctx context.Context, email string) error {
 	return r.rdb.Del(ctx, global.EMAIL_CODE+email).Err()
-}
-
-func (r *authRepository) SetVerificationInfo(ctx context.Context, info string, ttl time.Duration) error {
-	return r.rdb.Set(ctx, info, info, ttl).Err()
-}
-
-func (r *authRepository) GetVerificationInfo(ctx context.Context, info string) (string, error) {
-	return r.rdb.Get(ctx, info).Result()
-}
-
-func (r *authRepository) DelVerificationInfo(ctx context.Context, info string) error {
-	return r.rdb.Del(ctx, info).Err()
 }
 
 func (r *authRepository) DelOfflineMark(ctx context.Context, userId int) error {

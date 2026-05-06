@@ -20,7 +20,6 @@ type AuthService interface {
 	Login(ctx context.Context, req request.LoginReq, ipAddress, ipSource string) (*response.LoginVO, error)
 	AdminLogin(ctx context.Context, req request.LoginReq, ipAddress, ipSource string) (*response.LoginVO, error)
 	Register(ctx context.Context, req request.RegisterReq) error
-	VerifyCode(ctx context.Context, code string) error
 	Logout(ctx context.Context, authId int, tokenStr string) error
 	SendCode(ctx context.Context, email string) error
 	GetUserAuthById(ctx context.Context, id int) (*entity.UserAuth, error)
@@ -171,32 +170,16 @@ func (s *authService) Register(ctx context.Context, req request.RegisterReq) err
 		return pkgErrors.NewDefault(pkgErrors.CodeEmailExist)
 	}
 
-	info := utils.GenEmailVerificationInfo(req.Email, req.Password)
-	if err := s.authRepo.SetVerificationInfo(ctx, info, 15*time.Minute); err != nil {
-		return pkgErrors.NewDefault(pkgErrors.CodeRedisOpError)
-	}
-
-	emailData := utils.GetEmailData(req.Email, info)
-	err = utils.SendEmail(req.Email, emailData)
-	if err != nil {
-		return pkgErrors.NewDefault(pkgErrors.CodeSendEmailErr)
-	}
-	return nil
-}
-
-func (s *authService) VerifyCode(ctx context.Context, code string) error {
-	val, err := s.authRepo.GetVerificationInfo(ctx, code)
-	if err != nil || val == "" {
+	storedCode, err := s.authRepo.GetEmailCode(ctx, req.Email)
+	if err != nil || storedCode == "" {
 		return pkgErrors.NewDefault(pkgErrors.CodeCodeWrong)
 	}
-	s.authRepo.DelVerificationInfo(ctx, code)
-
-	username, password, err := utils.ParseEmailVerificationInfo(code)
-	if err != nil {
+	if storedCode != req.Code {
 		return pkgErrors.NewDefault(pkgErrors.CodeCodeWrong)
 	}
+	s.authRepo.DelEmailCode(ctx, req.Email)
 
-	_, _, _, err = s.authRepo.CreateNewUser(username, username, password)
+	_, _, _, err = s.authRepo.CreateNewUser(req.Email, req.Email, req.Password)
 	if err != nil {
 		return pkgErrors.NewDefault(pkgErrors.CodeDbOpError)
 	}

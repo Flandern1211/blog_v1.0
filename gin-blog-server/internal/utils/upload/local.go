@@ -9,6 +9,7 @@ import (
 	"mime/multipart"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -24,7 +25,7 @@ func (*Local) UploadFile(file *multipart.FileHeader) (filePath, fileName string,
 	filename := name + "_" + time.Now().Format("20060102150405") + ext // 拼接新文件名
 
 	conf := g.Conf.Upload
-	mkdirErr := os.MkdirAll(conf.StorePath, os.ModePerm) // 尝试创建存储路径
+	mkdirErr := os.MkdirAll(conf.StorePath, os.ModePerm) // 创建存储路径
 	if mkdirErr != nil {
 		slog.Error("function os.MkdirAll() Filed", slog.Any("err", mkdirErr.Error()))
 		return "", "", errors.New("function os.MkdirAll() Filed, err:" + mkdirErr.Error())
@@ -38,14 +39,26 @@ func (*Local) UploadFile(file *multipart.FileHeader) (filePath, fileName string,
 		slog.Error("function file.Open() Filed", slog.String("err", openError.Error()))
 		return "", "", errors.New("function file.Open() Filed, err:" + openError.Error())
 	}
-	defer f.Close() // 创建文件 defer 关闭
+	defer func(f multipart.File) {
+		closeErr := f.Close()
+		if closeErr != nil {
+			slog.Error("function file.Close() Filed", slog.String("err", openError.Error()))
+			return
+		}
+	}(f) // 创建文件 defer 关闭
 
 	out, createErr := os.Create(storePath)
 	if createErr != nil {
 		slog.Error("function os.Create() Filed", slog.String("err", createErr.Error()))
 		return "", "", errors.New("function os.Create() Filed, err:" + createErr.Error())
 	}
-	defer out.Close() // 创建文件 defer 关闭
+	defer func(out *os.File) {
+		err := out.Close()
+		if err != nil {
+			slog.Error("function file.Close() Filed", slog.String("err", openError.Error()))
+			return
+		}
+	}(out)
 
 	_, copyErr := io.Copy(out, f) // 拷贝文件
 	if copyErr != nil {
@@ -57,8 +70,14 @@ func (*Local) UploadFile(file *multipart.FileHeader) (filePath, fileName string,
 
 // 从本地删除文件
 func (*Local) DeleteFile(key string) error {
-	p := g.GetConfig().Upload.StorePath + "/" + key
-	if strings.Contains(p, g.GetConfig().Upload.StorePath) {
+	conf := g.Conf.Upload
+	storePath := conf.StorePath
+	p := storePath + "/" + key
+	//防止../等会跳出存储路径的非法key
+	//filepath.Clean会清除路径中的非法字符
+	if !strings.HasPrefix(filepath.Clean(p), filepath.Clean(conf.StorePath)) {
+		return errors.New("非法文件路径")
+	} else {
 		if err := os.Remove(p); err != nil {
 			return errors.New("本地文件删除失败, err:" + err.Error())
 		}

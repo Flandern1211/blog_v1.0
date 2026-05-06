@@ -8,6 +8,7 @@ type LoginReq struct {
 type RegisterReq struct {
 	Email    string `json:"email" binding:"required" validate:"required,email"`
 	Password string `json:"password" binding:"required,min=4,max=20" validate:"required,min=4,max=20"`
+	Code     string `json:"code" binding:"required" validate:"required"`
 }
 
 type SendCodeReq struct {

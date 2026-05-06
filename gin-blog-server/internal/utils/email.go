@@ -4,58 +4,20 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	g "gin-blog/internal/global"
 	"html/template"
 	"log/slog"
 
 	"github.com/k3a/html2text"
 	"github.com/vanng822/go-premailer/premailer"
 	"gopkg.in/gomail.v2"
+
+	g "gin-blog/internal/global"
 )
 
 type EmailData struct {
 	UserName string
 	Subject  string
-	Code     string // 6位验证码
-	URL      string // 验证链接
-}
-
-// GetEmailData 获取邮件数据
-func GetEmailData(username, info string) *EmailData {
-	baseURL := g.GetConfig().Email.URL
-	return &EmailData{
-		UserName: username,
-		Subject:  "注册验证",
-		URL:      baseURL + "/api/verify?info=" + info,
-	}
-}
-
-// SendEmail 发送验证邮件（链接形式）
-func SendEmail(username string, data *EmailData) error {
-	conf := g.GetConfig().Email
-	host := conf.Host
-	port := conf.Port
-	user := conf.SmtpUser
-	pass := conf.SmtpPass
-	from := conf.From
-
-	slog.Info(fmt.Sprintf("发送验证邮件 to=%s", username))
-
-	// 这里简单起见，直接使用 buildCodeEmailHTML 的逻辑，或者你可以加载 assets/templates/email-verify.tpl
-	// 由于 assets/templates/email-verify.tpl 依赖 base.tpl，这里先用简单的 HTML
-	htmlBody := fmt.Sprintf(`<h3>你好，%s</h3><p>请点击以下链接激活账户：</p><a href="%s">%s</a>`, data.UserName, data.URL, data.URL)
-
-	m := gomail.NewMessage()
-	m.SetHeader("From", from)
-	m.SetHeader("To", username) // 注意：这里 handle_auth.go 传进来的是 username，但实际上应该是 email。
-	// 查阅 handle_auth.go:214: err = utils.SendEmail(regreq.Username,EmailData)
-	// 确实传的是 username。这可能是原代码的 bug，或者 username 就是 email。
-	m.SetHeader("Subject", data.Subject)
-	m.SetBody("text/html", htmlBody)
-
-	d := gomail.NewDialer(host, port, user, pass)
-	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
-	return d.DialAndSend(m)
+	Code     string
 }
 
 // SendCodeEmail 发送含验证码的邮件

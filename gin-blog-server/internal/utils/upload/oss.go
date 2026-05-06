@@ -14,6 +14,7 @@ type OSS interface {
 // 根据配置文件中的配置判断文件上传实例
 func NewOSS() OSS {
 	switch g.GetConfig().Upload.OssType {
+	//暂时只有本地存储方式
 	case "local":
 		return &Local{}
 	default:
