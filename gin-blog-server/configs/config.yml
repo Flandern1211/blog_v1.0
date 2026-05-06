@@ -9,17 +9,15 @@ JWT:
   Expire: 24 # hour
   Issuer: "gin-vue-blog"
 Mysql:
-  Host: "127.0.0.1"
+  Host: "localhost"
   Port: "3306"
   Config: "charset=utf8mb4&parseTime=True&loc=Local" # 其他配置, 例如时区
   Dbname: "gvb"
   Username: "root"
   Password: "20041211wzwaicjW."
-Sqlite:
-  Dsn: "gvb.db"
 Redis:
   DB: 7
-  Addr: '127.0.0.1:6379'
+  Addr: 'localhost:6379'
   Password: ''
 Session:
   Name: "mysession"
@@ -31,14 +29,15 @@ Log:
   Directory: "log"
 Email:
   Host: "smtp.qq.com" # 服务器地址, 例如 smtp.qq.com 前往要发邮件的邮箱查看其 smtp 协议
-  Port: 465  # 前往要发邮件的邮箱查看其 smtp 协议端口, 大多为 465
+  Port: 587  # 前往要发邮件的邮箱查看其 smtp 协议端口, 大多为 587
   From: "3180066912@qq.com" # 发件人 (邮箱)
   SmtpPass: "izxjghfdijzmdhea" # 密钥, 不是邮箱登录密码, 是开启 smtp 服务后获取的一串验证码
   SmtpUser: "3180066912@qq.com" # 发件人昵称, 通常为自己的邮箱名
+  URL: "60.205.184.232:8084" # 站点基础 URL, 用于生成验证链接
 Captcha:
   SendEmail: true # 通过邮箱发送验证码
-  ExpireTime: 15  # 过期时间 (分钟)
+  ExpireTime: 5  # 过期时间 (分钟)
 Upload:
   OssType: "local" # local | qiniu
   Path: "public/uploaded"      # 本地文件访问路径: OssType="local" 生效
-  StorePath: "../public/uploaded" # 本地文件上传路径: 相对于 main.go, OssType="local" 生效
+  StorePath: "/public/uploaded" # 本地文件上传路径: 相对于 main.go, OssType="local" 生效
